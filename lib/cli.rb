@@ -153,7 +153,31 @@ class NEDL::CLI
       puts "(#{i})  #{dl.name}"
       puts "Size: #{dl.size}   Version: #{dl.version}"
     end
+    puts "-----------------------------------------------------------------------"
+
+    get_download_choice(download_list)
+  end
+
+  def get_download_choice(download_list)
+    puts "Enter the number of the download you'd like to add to your queue,"
+    puts "type 'back' to list the vector files again"
+    puts "type 'main' to go back to the main menu"
+
+    choice = gets.strip
+
+    case choice
+    when "back"
+      list_vector_file_types(download_list.first.type.theme)
+    when "main"
+      list_main_menu
+      main_menu_choice
+    else
+      puts "Invalid input"
+      get_download_choice(download_list)
+    end
+
 
   end
+
 
 end
