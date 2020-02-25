@@ -95,7 +95,7 @@ class NEDL::CLI
   end
 
   def list_file_types(theme)
-    binding.pry
+    NEDL::Scraper.scrape_file_list(theme)
   end
 
 end
