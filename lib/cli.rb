@@ -93,18 +93,24 @@ class NEDL::CLI
 
     if theme[choice - 1].category == "cultural" || theme[choice - 1].category == "physical"
       NEDL::Scraper.scrape_vector_file_list(theme[choice - 1])
-      list_vector_file_types
-      binding.pry
+      list_vector_file_types(theme[choice - 1])
     else
       NEDL::Scraper.scrape_raster_file_list(theme[choice - 1])
-      list_raster_file_types
+      list_raster_file_types(theme[choice - 1])
     end
   end
 
-  def list_vector_file_types
-
-    binding.pry
-
+  def list_vector_file_types(theme)
+    puts ""
+    puts "Files for #{theme.url_add.split("-").map{ |word| word.capitalize }.join(" ")}".upcase
+    
+    theme.files.each.with_index(1) do |file, i|
+      puts "-----------------------------------------------------------------------"
+      puts "(#{i})"
+      puts "Name: #{file.name}"
+      puts "Description: #{file.desc}"
+    end
+    puts "-----------------------------------------------------------------------"
   end
 
 end
