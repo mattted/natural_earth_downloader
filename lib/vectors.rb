@@ -9,8 +9,6 @@ class NEDL::DataVector
     @theme = theme
     @downloads = []
     @@all << self
-
-    theme.files << self
   end
 
   def self.all

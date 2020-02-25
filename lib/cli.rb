@@ -63,6 +63,8 @@ class NEDL::CLI
       get_scale_choice(scales)
     end
         
+    binding.pry
+
     list_categories(scales[choice - 1]["name"])
   end
 
@@ -111,6 +113,7 @@ class NEDL::CLI
       puts "Description: #{file.desc}"
     end
     puts "-----------------------------------------------------------------------"
+    binding.pry
   end
 
 end
