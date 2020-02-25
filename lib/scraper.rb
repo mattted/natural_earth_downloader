@@ -9,17 +9,41 @@ class NEDL::Scraper
       name = node.css("h3").text.split(",").first.strip
       scale = node.css("h3").text.split(",").last.strip.split(":").last
       desc = node.css("p").last.text.strip
+
       node.css("a").each do |link| 
         category = link.text.strip.downcase
         url = link.attr('href').split('/').last.strip
         new_scale = NEDL::DataTheme.new(name, scale, desc, category, url)
       end
+
     end
   end
 
-  def self.scrape_file_list(theme)
+  def self.scrape_vector_file_list(theme)
     doc = Nokogiri::HTML(open(NE_URL + theme.url_add))
-    binding.pry
+    
+    doc.css(".download-entry").each do |data_vector|
+      name = data_vector.css("h3").text
+      desc = data_vector.css(".downloadPromoBlock em").text
+
+      new_vector = NEDL::DataVector.new(name, desc, theme)
+
+      data_vector.css(".download-link-div").each do |download|
+        name = download.css(".download-link").text
+        url = download.css(".download-link").attr('href').text
+        size = download.css(".download-link-span").text.split(")").first.split("(").last
+        version = download.css(".download-link-span").text.split(" ").last
+        type = new_vector
+
+        new_vector.downloads << NEDL::Download.new(name, size, version, type, url)
+                
+      end
+    end
+      # (name, size, version, type, url)
+  end
+
+  def self.scrape_raster_file_list(theme)
+    doc = Nokogiri::HTML(open(NE_URL + theme.url_add))
   end
 
 end

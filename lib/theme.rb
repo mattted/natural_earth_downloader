@@ -1,6 +1,6 @@
 class NEDL::DataTheme
 
-  attr_accessor :name, :scale, :desc, :category, :url_add
+  attr_accessor :name, :scale, :desc, :category, :url_add, :files
   @@all = []
 
   def initialize(name, scale, desc, category, url_add)
@@ -9,6 +9,7 @@ class NEDL::DataTheme
     @category = category
     @desc = desc
     @url_add = url_add
+    @files = []
     @@all << self
   end
 

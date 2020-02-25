@@ -91,11 +91,20 @@ class NEDL::CLI
       get_category_choice(theme)
     end
 
-    list_file_types(theme[choice - 1])
+    if theme[choice - 1].category == "cultural" || theme[choice - 1].category == "physical"
+      NEDL::Scraper.scrape_vector_file_list(theme[choice - 1])
+      list_vector_file_types
+      binding.pry
+    else
+      NEDL::Scraper.scrape_raster_file_list(theme[choice - 1])
+      list_raster_file_types
+    end
   end
 
-  def list_file_types(theme)
-    NEDL::Scraper.scrape_file_list(theme)
+  def list_vector_file_types
+
+    binding.pry
+
   end
 
 end

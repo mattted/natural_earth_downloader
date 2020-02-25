@@ -3,6 +3,7 @@ require "./lib/cli"
 require "./lib/scraper"
 require "./lib/download"
 require "./lib/theme"
+require "./lib/vectors"
 
 require "nokogiri"
 require "open-uri"
