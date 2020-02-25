@@ -39,7 +39,12 @@ class NEDL::CLI
     puts ""
     puts "Available Data Scales"
 
+    # Scrape and initialize the data theme objects found on the download page
     NEDL::Scraper.scrape_data_themes
+
+    # Since scales/categories are both in DataTheme objects, and each combination
+    # of a scale/category makes an object unique, a new hash must be created
+    # containing only the unique scales in order to ask the user only their scale preference
     unique_scales = NEDL::DataTheme.unique_scales
 
     unique_scales.each.with_index(1) do |scale, i|
@@ -62,8 +67,6 @@ class NEDL::CLI
       puts "Invalid input"
       get_scale_choice(scales)
     end
-        
-    binding.pry
 
     list_categories(scales[choice - 1]["name"])
   end
@@ -73,32 +76,38 @@ class NEDL::CLI
     puts "Available categories for #{scale_name}"
     puts "-----------------------------------------------------------------------"
 
-    categories = NEDL::DataTheme.all.select{ |theme| theme.name == scale_name }
+    # get a selection of DataThemes that have the user selected scale
+    themes = NEDL::DataTheme.all.select{ |theme| theme.name == scale_name }
 
-    categories.each.with_index(1) do |theme, i|
+    # puts the category of each theme that has the user selected scale
+    themes.each.with_index(1) do |theme, i|
       puts "(#{i}) #{theme.category.capitalize} "
     end
 
     puts "-----------------------------------------------------------------------"
 
-    get_category_choice(categories)
+    # passes the DataTheme objects with appropriate scales
+    get_category_choice(themes)
   end
 
-  def get_category_choice(theme)
+  def get_category_choice(themes)
     puts "Please enter the number of the category you'd like to see data for: "
     choice = gets.strip.to_i
 
-    if choice > theme.length || choice <= 0
+    if choice > themes.length || choice <= 0
       puts "Invalid input"
-      get_category_choice(theme)
+      get_category_choice(themes)
     end
 
-    if theme[choice - 1].category == "cultural" || theme[choice - 1].category == "physical"
-      NEDL::Scraper.scrape_vector_file_list(theme[choice - 1])
-      list_vector_file_types(theme[choice - 1])
+    if themes[choice - 1].category == "cultural" || themes[choice - 1].category == "physical"
+
+      # passes a single DataTheme based on user selection of scale and category
+      NEDL::Scraper.scrape_vector_file_list(themes[choice - 1])
+      list_vector_file_types(themes[choice - 1])
     else
-      NEDL::Scraper.scrape_raster_file_list(theme[choice - 1])
-      list_raster_file_types(theme[choice - 1])
+      # passes a single DataTheme based on user selection of scale and category
+      NEDL::Scraper.scrape_raster_file_list(themes[choice - 1])
+      list_raster_file_types(themes[choice - 1])
     end
   end
 
@@ -106,14 +115,45 @@ class NEDL::CLI
     puts ""
     puts "Files for #{theme.url_add.split("-").map{ |word| word.capitalize }.join(" ")}".upcase
     
-    theme.files.each.with_index(1) do |file, i|
+    vector_files = NEDL::DataVector.all.select do |file|
+      file.theme == theme
+    end
+
+    vector_files.each.with_index(1) do |file, i|
       puts "-----------------------------------------------------------------------"
       puts "(#{i})"
       puts "Name: #{file.name}"
       puts "Description: #{file.desc}"
     end
     puts "-----------------------------------------------------------------------"
-    binding.pry
+    
+    get_file_choice(vector_files)
+  end
+
+  def get_file_choice(vector_files)
+    puts "Please enter the number of the file you'd like to see downloads for:"
+    choice = gets.strip.to_i
+
+    if choice > vector_files.length || choice <= 0
+      puts "Invalid input"
+      get_file_choice(vector_files)
+    end
+
+    list_downloads(vector_files[choice - 1])
+  end
+
+  def list_downloads(vector_file)
+    puts ""
+    puts "Downloads for #{vector_file.name}"
+
+    download_list = NEDL::Download.all.select { |dl| dl.type == vector_file }
+
+    download_list.each.with_index(1) do |dl, i|
+      puts "-----------------------------------------------------------------------"
+      puts "(#{i})  #{dl.name}"
+      puts "Size: #{dl.size}   Version: #{dl.version}"
+    end
+
   end
 
 end

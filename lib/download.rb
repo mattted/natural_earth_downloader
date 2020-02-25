@@ -1,6 +1,6 @@
 class NEDL::Download
   
-  attr_reader :name, :size, :version, :type, :theme, :url
+  attr_reader :name, :size, :version, :type, :url
   @@all = []
 
   def initialize(name, size, version, type, url)
