@@ -2,7 +2,6 @@ require "./config/version"
 require "./lib/cli"
 require "./lib/scraper"
 require "./lib/download"
-require "./lib/scale"
 require "./lib/theme"
 
 require "nokogiri"

@@ -40,19 +40,62 @@ class NEDL::CLI
     puts "Available Data Scales"
 
     NEDL::Scraper.scrape_data_themes
+    unique_scales = NEDL::DataTheme.unique_scales
 
-    NEDL::DataScale.all.each.with_index(1) do |scale, i|
+    unique_scales.each.with_index(1) do |scale, i|
       puts "-----------------------------------------------------------------------"
       puts "(#{i})"
-      puts "Name: #{scale.name.capitalize}"
-      puts "Scale: 1:#{scale.scale}"
-      puts "Description: #{scale.desc}"
+      puts "Name: #{scale["name"].capitalize}"
+      puts "Scale: 1:#{scale["scale"]}"
+      puts "Description: #{scale["desc"]}"
     end
     puts "-----------------------------------------------------------------------"
+
+    get_scale_choice(unique_scales)
+  end
+
+  def get_scale_choice(scales)    
+    puts "Please enter the number of scale you'd like to see data for: "
+    choice = gets.strip.to_i
+
+    if choice > scales.length || choice <= 0
+      puts "Invalid input"
+      get_scale_choice(scales)
+    end
+        
+    list_categories(scales[choice - 1]["name"])
+  end
+
+  def list_categories(scale_name)
     puts ""
-    puts "Choose a the number of a suitable data theme from the options above:"
-    
-    # get_theme_choice
+    puts "Available categories for #{scale_name}"
+    puts "-----------------------------------------------------------------------"
+
+    categories = NEDL::DataTheme.all.select{ |theme| theme.name == scale_name }
+
+    categories.each.with_index(1) do |theme, i|
+      puts "(#{i}) #{theme.category.capitalize} "
+    end
+
+    puts "-----------------------------------------------------------------------"
+
+    get_category_choice(categories)
+  end
+
+  def get_category_choice(theme)
+    puts "Please enter the number of the category you'd like to see data for: "
+    choice = gets.strip.to_i
+
+    if choice > theme.length || choice <= 0
+      puts "Invalid input"
+      get_category_choice(theme)
+    end
+
+    list_file_types(theme[choice - 1])
+  end
+
+  def list_file_types(theme)
+    binding.pry
   end
 
 end
