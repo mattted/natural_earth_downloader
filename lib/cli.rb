@@ -10,6 +10,8 @@ class NEDL::CLI
   end
 
   def list_main_menu
+    puts "Main Menu"
+    puts "---------------------------------------------------"
     puts "(1) Add files to download queue"
     puts "(2) View files in download queue"
     puts "(3) Download files in download queue"
@@ -24,7 +26,9 @@ class NEDL::CLI
     when "1"
       scale_menu
     when "2"
-      puts "2"
+      NEDL::DLQueue.list
+      list_main_menu
+      main_menu_choice
     when "3"
       puts "selected 3"
     when "exit"
@@ -159,8 +163,8 @@ class NEDL::CLI
   end
 
   def get_download_choice(download_list)
-    puts "Enter the number of the download you'd like to add to your queue,"
-    puts "type 'back' to list the vector files again"
+    puts "Enter the number of the download you'd like to add to your queue or"
+    puts "type 'back' to list the vector files again or"
     puts "type 'main' to go back to the main menu"
 
     choice = gets.strip
@@ -171,12 +175,20 @@ class NEDL::CLI
     when "main"
       list_main_menu
       main_menu_choice
-    else
+    end
+
+    if choice.to_i <= 0 || choice.to_i > download_list.length
       puts "Invalid input"
       get_download_choice(download_list)
     end
 
+    NEDL::DLQueue.add_to_queue(download_list[choice.to_i - 1]) if !NEDL::DLQueue.all.include?(download_list[choice.to_i - 1]) 
+    puts ""
+    puts "#{download_list[choice.to_i - 1].name} added to queue"
+    puts ""
 
+    list_downloads(download_list.first.type)
+    
   end
 
 

@@ -2,16 +2,23 @@ class NEDL::DLQueue
 
   @@all = []
 
-  def all
+  def self.all
     @@all
   end
 
-  def add_to_queue(download)
+  def self.add_to_queue(download)
     @@all << download
   end
 
-  def list
-    
+  def self.list
+    puts ""
+    puts "Downloads currently in queue"
+    puts "---------------------------------------------------"
+    self.all.each do |download|
+      puts "1:#{download.type.theme.scale} | #{download.type.name} - #{download.name} | #{download.size}"
+    end
+    puts "---------------------------------------------------"
+    puts ""
   end
 
 
