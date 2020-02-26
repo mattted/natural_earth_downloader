@@ -30,9 +30,11 @@ class NEDL::CLI
       list_main_menu
       main_menu_choice
     when "3"
-      puts "selected 3"
+      NEDL::DLQueue.download_queue
+      list_main_menu
+      main_menu_choice
     when "exit"
-      puts "exit"
+      puts "Quitting..."
     else
       puts "Invalid input"
       main_menu_choice
@@ -175,20 +177,19 @@ class NEDL::CLI
     when "main"
       list_main_menu
       main_menu_choice
+    else
+      if choice.to_i <= 0 || choice.to_i > download_list.length
+        puts "Invalid input IS THIS IT"
+        get_download_choice(download_list)
+      end
+
+      NEDL::DLQueue.add_to_queue(download_list[choice.to_i - 1]) if !NEDL::DLQueue.all.include?(download_list[choice.to_i - 1]) 
+      puts ""
+      puts "#{download_list[choice.to_i - 1].name} added to queue"
+      puts ""
+
+      list_downloads(download_list.first.type)
     end
-
-    if choice.to_i <= 0 || choice.to_i > download_list.length
-      puts "Invalid input"
-      get_download_choice(download_list)
-    end
-
-    NEDL::DLQueue.add_to_queue(download_list[choice.to_i - 1]) if !NEDL::DLQueue.all.include?(download_list[choice.to_i - 1]) 
-    puts ""
-    puts "#{download_list[choice.to_i - 1].name} added to queue"
-    puts ""
-
-    list_downloads(download_list.first.type)
-    
   end
 
 

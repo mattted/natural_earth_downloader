@@ -21,5 +21,22 @@ class NEDL::DLQueue
     puts ""
   end
 
+  def self.download_queue
+
+    puts "Enter a path where your files will be downloaded:"
+    path = gets.strip
+
+    self.all.each do |dl|
+      tempfile = Down.download(dl.url)
+      FileUtils.mv(tempfile.path, "#{path}#{tempfile.original_filename}")
+      puts "#{tempfile.original_filename} downloaded..."
+    end
+
+    puts ""
+    puts "File downloads complete. Download queue cleared"
+    puts ""
+
+    self.all.clear
+  end
 
 end
