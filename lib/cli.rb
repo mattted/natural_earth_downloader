@@ -1,6 +1,7 @@
 class NEDL::CLI
 
   def call
+    system("clear")
     puts "=============================".blue
     puts "Natural Earth File Downloader".blue
     puts "=============================".blue
@@ -186,7 +187,7 @@ class NEDL::CLI
       NEDL::DLQueue.add_to_queue(download_list[choice.to_i - 1]) if !NEDL::DLQueue.all.include?(download_list[choice.to_i - 1]) 
       puts ""
       puts "#{download_list[choice.to_i - 1].name} added to queue".green
-      puts ""
+      sleep(1)
 
       list_downloads(download_list.first.type)
     end
