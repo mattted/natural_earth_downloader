@@ -1,25 +1,25 @@
 class NEDL::CLI
 
   def call
-    puts "================================="
-    puts "Natural Earth Project Initializer"
-    puts "================================="
+    puts "=============================".blue
+    puts "Natural Earth File Downloader".blue
+    puts "=============================".blue
 
     list_main_menu
     main_menu_choice
   end
 
   def list_main_menu
-    puts "Main Menu"
+    puts "Main Menu".blue
     puts "---------------------------------------------------"
-    puts "(1) Add files to download queue"
-    puts "(2) View files in download queue"
-    puts "(3) Download files in download queue"
+    puts "(1)".red + " View and add files to download queue"
+    puts "(2)".red + " View files in download queue"
+    puts "(3)".red + " Download files in download queue"
     puts "---------------------------------------------------"
   end
 
   def main_menu_choice
-    puts "Select a number from the options above or type exit"
+    puts "Select a number from the options above or type ".blue + "exit".green
     main_menu_input = gets.chomp.strip.downcase
     
     case main_menu_input
@@ -27,6 +27,7 @@ class NEDL::CLI
       scale_menu
     when "2"
       NEDL::DLQueue.list
+      sleep(1)
       list_main_menu
       main_menu_choice
     when "3"
@@ -34,16 +35,16 @@ class NEDL::CLI
       list_main_menu
       main_menu_choice
     when "exit"
-      puts "Quitting..."
+      puts "Quitting...".red
     else
-      puts "Invalid input"
+      puts "Invalid input".red
       main_menu_choice
     end
   end
 
   def scale_menu
     puts ""
-    puts "Available Data Scales"
+    puts "Available Data Scales".blue
 
     # Scrape and initialize the data theme objects found on the download page
     NEDL::Scraper.scrape_data_themes
@@ -55,7 +56,7 @@ class NEDL::CLI
 
     unique_scales.each.with_index(1) do |scale, i|
       puts "-----------------------------------------------------------------------"
-      puts "(#{i})"
+      puts "(#{i})".red
       puts "Name: #{scale["name"].capitalize}"
       puts "Scale: 1:#{scale["scale"]}"
       puts "Description: #{scale["desc"]}"
@@ -66,11 +67,11 @@ class NEDL::CLI
   end
 
   def get_scale_choice(scales)    
-    puts "Please enter the number of scale you'd like to see data for: "
+    puts "Please enter the number of the scale you'd like to see data for:".blue
     choice = gets.strip.to_i
 
     if choice > scales.length || choice <= 0
-      puts "Invalid input"
+      puts "Invalid input".red
       get_scale_choice(scales)
     end
 
@@ -79,7 +80,7 @@ class NEDL::CLI
 
   def list_categories(scale_name)
     puts ""
-    puts "Available categories for #{scale_name}"
+    puts "Available categories for #{scale_name}".blue
     puts "-----------------------------------------------------------------------"
 
     # get a selection of DataThemes that have the user selected scale
@@ -87,7 +88,7 @@ class NEDL::CLI
 
     # puts the category of each theme that has the user selected scale
     themes.each.with_index(1) do |theme, i|
-      puts "(#{i}) #{theme.category.capitalize} "
+      puts "(#{i}) ".red + " #{theme.category.capitalize} "
     end
 
     puts "-----------------------------------------------------------------------"
@@ -97,11 +98,11 @@ class NEDL::CLI
   end
 
   def get_category_choice(themes)
-    puts "Please enter the number of the category you'd like to see data for: "
+    puts "Please enter the number of the category you'd like to see data for:".blue
     choice = gets.strip.to_i
 
     if choice > themes.length || choice <= 0
-      puts "Invalid input"
+      puts "Invalid input".red
       get_category_choice(themes)
     end
 
@@ -119,15 +120,14 @@ class NEDL::CLI
 
   def list_vector_file_types(theme)
     puts ""
-    puts "Files for #{theme.url_add.split("-").map{ |word| word.capitalize }.join(" ")}".upcase
-    
+    puts "Files for #{theme.url_add.split("-").map{ |word| word.capitalize }.join(" ")}".blue
     vector_files = NEDL::DataVector.all.select do |file|
       file.theme == theme
     end
 
     vector_files.each.with_index(1) do |file, i|
       puts "-----------------------------------------------------------------------"
-      puts "(#{i})"
+      puts "(#{i})".red
       puts "Name: #{file.name}"
       puts "Description: #{file.desc}"
     end
@@ -137,11 +137,11 @@ class NEDL::CLI
   end
 
   def get_file_choice(vector_files)
-    puts "Please enter the number of the file you'd like to see downloads for:"
+    puts "Please enter the number of the file you'd like to see downloads for:".blue
     choice = gets.strip.to_i
 
     if choice > vector_files.length || choice <= 0
-      puts "Invalid input"
+      puts "Invalid input".red
       get_file_choice(vector_files)
     end
 
@@ -150,13 +150,13 @@ class NEDL::CLI
 
   def list_downloads(vector_file)
     puts ""
-    puts "Downloads for #{vector_file.name}"
+    puts "Downloads for #{vector_file.name}".blue
 
     download_list = NEDL::Download.all.select { |dl| dl.type == vector_file }
 
     download_list.each.with_index(1) do |dl, i|
       puts "-----------------------------------------------------------------------"
-      puts "(#{i})  #{dl.name}"
+      puts "(#{i})".red + "  #{dl.name}"
       puts "Size: #{dl.size}   Version: #{dl.version}"
     end
     puts "-----------------------------------------------------------------------"
@@ -165,9 +165,9 @@ class NEDL::CLI
   end
 
   def get_download_choice(download_list)
-    puts "Enter the number of the download you'd like to add to your queue or"
-    puts "type 'back' to list the vector files again or"
-    puts "type 'main' to go back to the main menu"
+    puts "Enter the number of the download you'd like to add to your queue or".blue
+    puts "type ".blue + "back".green + " to list the vector files again or".blue
+    puts "type ".blue + "main".green + " to go back to the main menu".blue
 
     choice = gets.strip
 
@@ -179,13 +179,13 @@ class NEDL::CLI
       main_menu_choice
     else
       if choice.to_i <= 0 || choice.to_i > download_list.length
-        puts "Invalid input IS THIS IT"
+        puts "Invalid input".red
         get_download_choice(download_list)
       end
 
       NEDL::DLQueue.add_to_queue(download_list[choice.to_i - 1]) if !NEDL::DLQueue.all.include?(download_list[choice.to_i - 1]) 
       puts ""
-      puts "#{download_list[choice.to_i - 1].name} added to queue"
+      puts "#{download_list[choice.to_i - 1].name} added to queue".green
       puts ""
 
       list_downloads(download_list.first.type)

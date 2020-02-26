@@ -9,6 +9,7 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     coderay (1.1.2)
+    colorize (0.8.1)
     down (5.1.1)
       addressable (~> 2.5)
     method_source (0.9.2)
@@ -26,6 +27,7 @@ PLATFORMS
 
 DEPENDENCIES
   NEDL!
+  colorize
   down
   nokogiri
   pry
