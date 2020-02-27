@@ -138,20 +138,34 @@ class NEDL::CLI
   end
 
   def get_file_choice(files)
-    puts "Please enter the number of the file you'd like to see downloads for:".blue
-    choice = gets.strip.to_i
+    puts "Enter the number of the file you'd like to view info for or".blue
+    puts "type ".blue + "back".green + " to show the previous list again or".blue
+    puts "type ".blue + "main".green + " to go back to the main menu".blue
+    choice = gets.strip
 
-    if choice > files.length || choice <= 0
-      puts "Invalid input".red
-      get_file_choice(files)
+    case choice
+    when "back"
+      if files.first.class == NEDL::DataVector
+        scale_menu
+      else
+        list_raster_categories(files.first.category.theme)
+      end
+    when "main"
+      list_main_menu
+      main_menu_choice
+    else
+      if choice.to_i > files.length || choice.to_i <= 0
+        puts "Invalid input".red
+        get_file_choice(files)
+      end
+
+      list_downloads(files[choice.to_i - 1])
     end
-
-    list_downloads(files[choice - 1])
   end
 
   def list_raster_categories(theme)
     puts ""
-    puts "Files for #{theme.url_add.split("-").map{ |word| word.capitalize }.join(" ")}".blue
+    puts "Categories for #{theme.url_add.split("-").map{ |word| word.capitalize }.join(" ")}".blue
     raster_cats = NEDL::DataRasterCat.all.select do |category|
       category.theme == theme
     end
@@ -218,14 +232,18 @@ class NEDL::CLI
 
   def get_download_choice(download_list)
     puts "Enter the number of the download you'd like to add to your queue or".blue
-    puts "type ".blue + "back".green + " to list the vector files again or".blue
+    puts "type ".blue + "back".green + " to list the files again or".blue
     puts "type ".blue + "main".green + " to go back to the main menu".blue
-
+ 
     choice = gets.strip
 
     case choice
     when "back"
-      list_vector_file_types(download_list.first.type.theme)
+      if download_list.first.type.class == NEDL::DataVector
+        list_vector_file_types(download_list.first.type.theme)
+      else
+        list_raster_file_types(download_list.first.type.category)
+      end
     when "main"
       list_main_menu
       main_menu_choice
