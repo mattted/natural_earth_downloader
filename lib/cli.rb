@@ -149,11 +149,41 @@ class NEDL::CLI
     list_downloads(vector_files[choice - 1])
   end
 
-  def list_downloads(vector_file)
+  def list_raster_categories(theme)
     puts ""
-    puts "Downloads for #{vector_file.name}".blue
+    puts "Files for #{theme.url_add.split("-").map{ |word| word.capitalize }.join(" ")}".blue
+    raster_cats = NEDL::DataRasterCat.all.select do |category|
+      category.theme == theme
+    end
 
-    download_list = NEDL::Download.all.select { |dl| dl.type == vector_file }
+    raster_cats.each.with_index(1) do |category, i|
+      puts "-----------------------------------------------------------------------"
+      puts "(#{i})".red
+      puts "Name: #{category.name}"
+      puts "Description: #{category.desc}"
+    end
+    puts "-----------------------------------------------------------------------"
+
+    get_raster_category_choice(raster_cats)
+  end
+
+  def get_raster_category_choice(raster_cats)
+    puts "Please enter the number of the category you'd like to see files for:".blue
+    choice = gets.strip.to_i
+
+    if choice > raster_cats.length || choice <= 0
+      puts "Invalid input".red
+      get_raster_category_choice(raster_cats)
+    end
+
+    list_raster_file_types(raster_cats[choice - 1])
+  end
+
+  def list_downloads(data_file)
+    puts ""
+    puts "Downloads for #{data_file.name}".blue
+
+    download_list = NEDL::Download.all.select { |dl| dl.type == data_file }
 
     download_list.each.with_index(1) do |dl, i|
       puts "-----------------------------------------------------------------------"
