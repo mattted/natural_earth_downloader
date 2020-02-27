@@ -45,6 +45,20 @@ class NEDL::Scraper
     end
   end
 
+  def self.scrape_raster_categories(theme)
+    doc = Nokogiri::HTML(open(NE_URL + theme.url_add))
+
+    doc.css(".post .entry table tr td").each do |raster_cat|
+      name = raster_cat.css("h3").text
+      desc = raster_cat.css("p").text
+
+      if NEDL::DataRasterCat.all.detect{ |category| category.name == name && category.desc == desc } == nil && name != ""
+        NEDL::DataRasterCat.new(name, desc, theme)
+      end
+    end
+
+  end
+
   def self.scrape_raster_file_list(theme)
     doc = Nokogiri::HTML(open(NE_URL + theme.url_add))
   end
