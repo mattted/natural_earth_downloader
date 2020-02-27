@@ -51,11 +51,13 @@ class NEDL::DLQueue
     end
 
     if path[0] != "/" || path[-1] != "/"
-
+      puts ""
       puts "Invalid path. It must begin and end with a /".red
+      puts ""
       sleep(1)
       self.download_queue
     else
+      puts ""
       puts "Downloading files...".blue
 
       self.all.each do |dl|
