@@ -114,8 +114,8 @@ class NEDL::CLI
       list_vector_file_types(themes[choice - 1])
     else
       # passes a single DataTheme based on user selection of scale and category
-      NEDL::Scraper.scrape_raster_file_list(themes[choice - 1])
-      list_raster_file_types(themes[choice - 1])
+      NEDL::Scraper.scrape_raster_categories(themes[choice - 1])
+      list_raster_categories(themes[choice - 1])
     end
   end
 
