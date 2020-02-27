@@ -175,15 +175,15 @@ class NEDL::CLI
       puts "Invalid input".red
       get_raster_category_choice(raster_cats)
     end
-
+    binding.pry
     list_raster_file_types(raster_cats[choice - 1])
   end
 
-  def list_downloads(data_file)
+  def list_downloads(vector_file)
     puts ""
-    puts "Downloads for #{data_file.name}".blue
+    puts "Downloads for #{vector_file.name}".blue
 
-    download_list = NEDL::Download.all.select { |dl| dl.type == data_file }
+    download_list = NEDL::Download.all.select { |dl| dl.type == vector_file }
 
     download_list.each.with_index(1) do |dl, i|
       puts "-----------------------------------------------------------------------"

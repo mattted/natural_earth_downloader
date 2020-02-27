@@ -51,16 +51,37 @@ class NEDL::Scraper
     doc.css(".post .entry table tr td").each do |raster_cat|
       name = raster_cat.css("h3").text
       desc = raster_cat.css("p").text
+      url = raster_cat.css("a").attr("href").text if raster_cat.css("a").attr("href") != nil
 
       if NEDL::DataRasterCat.all.detect{ |category| category.name == name && category.desc == desc } == nil && name != ""
-        NEDL::DataRasterCat.new(name, desc, theme)
+        NEDL::DataRasterCat.new(name, desc, url, theme)
       end
     end
 
   end
 
-  def self.scrape_raster_file_list(theme)
-    doc = Nokogiri::HTML(open(NE_URL + theme.url_add))
+  def self.scrape_raster_file_list(cateogry)
+    doc = Nokogiri::HTML(open(NE_URL + category.url_add))
+    
+    doc.css(".download-entry").each do |data_raster|
+      name = data_raster.css("h3").text
+      desc = data_raster.css(".downloadPromoBlock em").text
+
+      if NEDL::DataRaster.all.detect { |raster| raster.name == name && raster.desc == desc } == nil
+        new_raster = NEDL::DataRaster.new(name, desc, category)
+
+        data_raster.css(".download-link-div").each do |download|
+          name = download.css(".download-link").text
+          url = download.css(".download-link").attr('href').text
+          size = download.css(".download-link-span").text.split(")").first.split("(").last
+          version = download.css(".download-link-span").text.split(" ").last
+          type = new_raster
+
+          NEDL::Download.new(name, size, version, type, url)
+                  
+        end
+      end
+    end
   end
 
 end
