@@ -14,13 +14,17 @@ class NEDL::DLQueue
     puts ""
     puts "Downloads currently in queue".blue
     puts "-----------------------------------------------------------------------------------"
-    self.all.each do |download|
-      if download.type.class == NEDL::DataVector
-        filetype = "Vector"
-        puts "#{filetype} | 1:#{download.type.theme.scale} | #{download.type.name} - #{download.name} | #{download.size}".green
-      else
-        filetype = "Raster"
-        puts "#{filetype} | 1:#{download.type.category.theme.scale} | #{download.type.name} - #{download.name} | #{download.size}".green
+    if self.all == []
+      puts "No downloads in queue".red
+    else
+      self.all.each do |download|
+        if download.type.class == NEDL::DataVector
+          filetype = "Vector"
+          puts "#{filetype} | 1:#{download.type.theme.scale} | #{download.type.name} - #{download.name} | #{download.size}".green
+        else
+          filetype = "Raster"
+          puts "#{filetype} | 1:#{download.type.category.theme.scale} | #{download.type.name} - #{download.name} | #{download.size}".green
+        end
       end
     end
     puts "-----------------------------------------------------------------------------------"
@@ -29,6 +33,13 @@ class NEDL::DLQueue
   end
 
   def self.download_queue
+
+    if self.all == []
+      puts ""
+      puts "No downloads currently in queue".red
+      puts ""
+      return
+    end
 
     puts "Enter the aboslute path where your files will be downloaded:".blue
     puts "Example: ".blue + "/home/[your_user_name]/Downloads/".green
