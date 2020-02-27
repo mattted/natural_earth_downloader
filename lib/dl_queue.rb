@@ -61,7 +61,17 @@ class NEDL::DLQueue
       puts "Downloading files...".blue
 
       self.all.each do |dl|
-        tempfile = Down.download(dl.url)
+        progress_bar = nil
+        tempfile = Down.download(dl.url,
+          content_length_proc: proc { |total|
+            if total.to_i > 0
+              progress_bar = ProgressBar.create(title: 'Downloading', total: total)
+            end
+          },
+          progress_proc: proc { |step|
+            progress_bar.progress = step
+          }
+        )
         FileUtils.mv(tempfile.path, "#{path}#{tempfile.original_filename}")
         puts "#{tempfile.original_filename} downloaded...".green
       end
