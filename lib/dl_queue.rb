@@ -13,11 +13,17 @@ class NEDL::DLQueue
   def self.list
     puts ""
     puts "Downloads currently in queue".blue
-    puts "---------------------------------------------------"
+    puts "-----------------------------------------------------------------------------------"
     self.all.each do |download|
-      puts "1:#{download.type.theme.scale} | #{download.type.name} - #{download.name} | #{download.size}".green
+      if download.type.class == NEDL::DataVector
+        filetype = "Vector"
+        puts "#{filetype} | 1:#{download.type.theme.scale} | #{download.type.name} - #{download.name} | #{download.size}".green
+      else
+        filetype = "Raster"
+        puts "#{filetype} | 1:#{download.type.category.theme.scale} | #{download.type.name} - #{download.name} | #{download.size}".green
+      end
     end
-    puts "---------------------------------------------------"
+    puts "-----------------------------------------------------------------------------------"
     puts "Total size of files in queue: #{self.calculate_queue_filesize.round(2)} MB".blue
     puts ""
   end

@@ -1,13 +1,12 @@
 class NEDL::DataVector
 
-  attr_accessor :name, :desc, :downloads, :theme
+  attr_accessor :name, :desc, :theme
   @@all = []
 
   def initialize(name, desc, theme)
     @name = name
     @desc = desc
     @theme = theme
-    @downloads = []
     @@all << self
   end
 

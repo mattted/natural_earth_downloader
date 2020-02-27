@@ -60,7 +60,7 @@ class NEDL::Scraper
 
   end
 
-  def self.scrape_raster_file_list(cateogry)
+  def self.scrape_raster_file_list(category)
     doc = Nokogiri::HTML(open(NE_URL + category.url_add))
     
     doc.css(".download-entry").each do |data_raster|

@@ -1,13 +1,12 @@
 class NEDL::DataRaster
 
-  attr_accessor :name, :desc, :downloads, :category
+  attr_accessor :name, :desc, :category
   @@all = []
 
   def initialize(name, desc, category)
     @name = name
     @desc = desc
     @category = category
-    @downloads = []
     @@all << self
   end
 
