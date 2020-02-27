@@ -69,14 +69,21 @@ class NEDL::CLI
 
   def get_scale_choice(scales)    
     puts "Please enter the number of the scale you'd like to see data for:".blue
-    choice = gets.strip.to_i
+    puts "type ".blue + "main".green + " to go back to the main menu".blue
+    choice = gets.strip
 
-    if choice > scales.length || choice <= 0
-      puts "Invalid input".red
-      get_scale_choice(scales)
+    case choice
+    when "main"
+      list_main_menu
+      main_menu_choice
+    else
+      if choice.to_i > scales.length || choice.to_i <= 0
+        puts "Invalid input".red
+        get_scale_choice(scales)
+      end
+
+      list_categories(scales[choice.to_i - 1]["name"])
     end
-
-    list_categories(scales[choice - 1]["name"])
   end
 
   def list_categories(scale_name)
@@ -100,22 +107,32 @@ class NEDL::CLI
 
   def get_category_choice(themes)
     puts "Please enter the number of the category you'd like to see data for:".blue
-    choice = gets.strip.to_i
+    puts "type ".blue + "back".green + " to show the previous list again or".blue
+    puts "type ".blue + "main".green + " to go back to the main menu".blue
+    choice = gets.strip
 
-    if choice > themes.length || choice <= 0
-      puts "Invalid input".red
-      get_category_choice(themes)
-    end
-
-    if themes[choice - 1].category == "cultural" || themes[choice - 1].category == "physical"
-
-      # passes a single DataTheme based on user selection of scale and category
-      NEDL::Scraper.scrape_vector_file_list(themes[choice - 1])
-      list_vector_file_types(themes[choice - 1])
+    case choice
+    when "back"
+      scale_menu
+    when "main"
+      list_main_menu
+      main_menu_choice
     else
-      # passes a single DataTheme based on user selection of scale and category
-      NEDL::Scraper.scrape_raster_categories(themes[choice - 1])
-      list_raster_categories(themes[choice - 1])
+      if choice.to_i > themes.length || choice.to_i <= 0
+        puts "Invalid input".red
+        get_category_choice(themes)
+      end
+
+      if themes[choice.to_i - 1].category == "cultural" || themes[choice.to_i - 1].category == "physical"
+
+        # passes a single DataTheme based on user selection of scale and category
+        NEDL::Scraper.scrape_vector_file_list(themes[choice.to_i - 1])
+        list_vector_file_types(themes[choice.to_i - 1])
+      else
+        # passes a single DataTheme based on user selection of scale and category
+        NEDL::Scraper.scrape_raster_categories(themes[choice.to_i - 1])
+        list_raster_categories(themes[choice.to_i - 1])
+      end
     end
   end
 
@@ -146,7 +163,7 @@ class NEDL::CLI
     case choice
     when "back"
       if files.first.class == NEDL::DataVector
-        scale_menu
+        list_categories(files.first.theme.name)
       else
         list_raster_categories(files.first.category.theme)
       end
@@ -189,7 +206,7 @@ class NEDL::CLI
 
     case choice
     when "back"
-      scale_menu
+      list_categories(raster_cats.first.theme.name)
     when "main"
       list_main_menu
       main_menu_choice
