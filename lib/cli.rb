@@ -28,7 +28,7 @@ class NEDL::CLI
       scale_menu
     when "2"
       NEDL::DLQueue.list
-      sleep(1)
+      # sleep(1)
       list_main_menu
       main_menu_choice
     when "3"
@@ -226,6 +226,7 @@ class NEDL::CLI
       puts "Size: #{dl.size}   Version: #{dl.version}"
     end
     puts "-----------------------------------------------------------------------"
+    puts ""
 
     get_download_choice(download_list)
   end
@@ -256,7 +257,7 @@ class NEDL::CLI
       NEDL::DLQueue.add_to_queue(download_list[choice.to_i - 1]) if !NEDL::DLQueue.all.include?(download_list[choice.to_i - 1]) 
       puts ""
       puts "#{download_list[choice.to_i - 1].name} added to queue".green
-      sleep(1)
+      # sleep(1)
 
       list_downloads(download_list.first.type)
     end
