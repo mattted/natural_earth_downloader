@@ -5,6 +5,7 @@ require "./lib/download"
 require "./lib/theme"
 require "./lib/vectors"
 require "./lib/dl_queue"
+require "./lib/raster_cat"
 
 require "nokogiri"
 require "open-uri"
