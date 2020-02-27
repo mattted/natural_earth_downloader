@@ -18,6 +18,7 @@ class NEDL::DLQueue
       puts "1:#{download.type.theme.scale} | #{download.type.name} - #{download.name} | #{download.size}".green
     end
     puts "---------------------------------------------------"
+    puts "Total size of files in queue: #{self.calculate_queue_filesize.round(2)} MB".blue
     puts ""
   end
 
@@ -37,22 +38,37 @@ class NEDL::DLQueue
       puts "Invalid path. It must begin and end with a /".red
       sleep(1)
       self.download_queue
+    else
+      puts "Downloading files...".blue
+
+      self.all.each do |dl|
+        tempfile = Down.download(dl.url)
+        FileUtils.mv(tempfile.path, "#{path}#{tempfile.original_filename}")
+        puts "#{tempfile.original_filename} downloaded...".green
+      end
+
+      puts ""
+      puts "File downloads complete. Download queue cleared".blue
+      puts ""
+      sleep(1)
+
+      self.all.clear
+    end
+  end
+
+  def self.calculate_queue_filesize
+    total_size = 0
+    
+    self.all.each do |download|
+      if download.size.split(" ").last.downcase == "kb"
+        total_size += download.size.split(" ").first.to_f * 0.001
+      else
+        total_size += download.size.split(" ").first.to_f
+      end        
     end
 
-    puts "Downloading files...".blue
+    total_size
 
-    self.all.each do |dl|
-      tempfile = Down.download(dl.url)
-      FileUtils.mv(tempfile.path, "#{path}#{tempfile.original_filename}")
-      puts "#{tempfile.original_filename} downloaded...".green
-    end
-
-    puts ""
-    puts "File downloads complete. Download queue cleared".blue
-    puts ""
-    sleep(1)
-
-    self.all.clear
   end
 
 end
