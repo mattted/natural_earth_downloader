@@ -183,15 +183,25 @@ class NEDL::CLI
 
   def get_raster_category_choice(raster_cats)
     puts "Please enter the number of the category you'd like to see files for:".blue
-    choice = gets.strip.to_i
+    puts "type ".blue + "back".green + " to list the files again or".blue
+    puts "type ".blue + "main".green + " to go back to the main menu".blue
+    choice = gets.strip
 
-    if choice > raster_cats.length || choice <= 0
-      puts "Invalid input".red
-      get_raster_category_choice(raster_cats)
+    case choice
+    when "back"
+      scale_menu
+    when "main"
+      list_main_menu
+      main_menu_choice
+    else
+      if choice.to_i > raster_cats.length || choice.to_i <= 0
+        puts "Invalid input".red
+        get_raster_category_choice(raster_cats)
+      end
+
+      NEDL::Scraper.scrape_raster_file_list(raster_cats[choice.to_i - 1])
+      list_raster_file_types(raster_cats[choice.to_i - 1])
     end
-
-    NEDL::Scraper.scrape_raster_file_list(raster_cats[choice - 1])
-    list_raster_file_types(raster_cats[choice - 1])
   end
 
   def list_raster_file_types(category)
