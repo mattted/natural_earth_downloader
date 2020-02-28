@@ -1,24 +1,6 @@
 # NaturalEarthDownloader
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/natural_earth_downloader`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'natural_earth_downloader'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install natural_earth_downloader
+The NaturalEarthDownload gem is a command line interface to download files from [Natural Earth Data](https://www.naturalearthdata.com). Natural Earth Data provides vector and raster files with well integrated and maintained catographic attributes to facilitate efficient map production. This gem attempts to provide an equally efficient way to download collections of that data.
 
 ## Usage
 
@@ -32,7 +14,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/natural_earth_downloader. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/natural_earth_downloader/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/mattted/natural_earth_downloader. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/mattted/natural_earth_downloader/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## License
