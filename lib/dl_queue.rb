@@ -41,9 +41,12 @@ class NEDL::DLQueue
       return
     end
 
+    puts ""
     puts "Enter the aboslute path where your files will be downloaded:".blue
     puts "Example: ".blue + "/home/[your_user_name]/Downloads/".green
     puts "Type ".blue + "abort".green + " to return to the main menu".blue
+    print ">>> "
+    
     path = gets.strip
 
     if path == "abort"
@@ -58,7 +61,7 @@ class NEDL::DLQueue
       self.download_queue
     else
       puts ""
-      puts "Downloading files...".blue
+      puts "Downloading files to ".blue + "#{path}".green
 
       self.all.each do |dl|
         progress_bar = nil

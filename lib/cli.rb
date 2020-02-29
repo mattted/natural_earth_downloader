@@ -21,6 +21,7 @@ class NEDL::CLI
 
   def main_menu_choice
     puts "Select a number from the options above or type ".blue + "exit".green
+    print ">>> "
     main_menu_input = gets.chomp.strip.downcase
     
     case main_menu_input
@@ -70,6 +71,7 @@ class NEDL::CLI
   def get_scale_choice(scales)    
     puts "Please enter the number of the scale you'd like to see data for:".blue
     puts "type ".blue + "main".green + " to go back to the main menu".blue
+    print ">>> "
     choice = gets.strip
 
     case choice
@@ -109,6 +111,7 @@ class NEDL::CLI
     puts "Please enter the number of the category you'd like to see data for:".blue
     puts "type ".blue + "back".green + " to show the previous list again or".blue
     puts "type ".blue + "main".green + " to go back to the main menu".blue
+    print ">>> "
     choice = gets.strip
 
     case choice
@@ -158,6 +161,7 @@ class NEDL::CLI
     puts "Enter the number of the file you'd like to view info for or".blue
     puts "type ".blue + "back".green + " to show the previous list again or".blue
     puts "type ".blue + "main".green + " to go back to the main menu".blue
+    print ">>> "
     choice = gets.strip
 
     case choice
@@ -202,6 +206,7 @@ class NEDL::CLI
     puts "Please enter the number of the category you'd like to see files for:".blue
     puts "type ".blue + "back".green + " to list the files again or".blue
     puts "type ".blue + "main".green + " to go back to the main menu".blue
+    print ">>> "
     choice = gets.strip
 
     case choice
@@ -262,6 +267,7 @@ class NEDL::CLI
     puts "Enter the number of the download you'd like to add to your queue or".blue
     puts "type ".blue + "back".green + " to list the files again or".blue
     puts "type ".blue + "main".green + " to go back to the main menu".blue
+    print ">>> "
  
     choice = gets.strip
 
