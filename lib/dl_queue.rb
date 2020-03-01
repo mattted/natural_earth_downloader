@@ -42,7 +42,7 @@ class NEDL::DLQueue
     end
 
     puts ""
-    puts "Enter the aboslute path to the folder where your files will be downloaded:".blue
+    puts "Enter the absolute path to the folder where your files will be downloaded:".blue
     puts "Example: ".blue + "/home/[your_user_name]/Downloads/".green
     puts "Type ".blue + "abort".green + " to return to the main menu".blue
     print ">>> "
