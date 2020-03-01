@@ -38,6 +38,7 @@ class NEDL::CLI
       main_menu_choice
     when "exit"
       puts "Quitting...".red
+      exit!
     else
       puts "Invalid input".red
       main_menu_choice
