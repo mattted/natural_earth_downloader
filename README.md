@@ -4,7 +4,9 @@ The NaturalEarthDownload gem is a command line interface to download files from 
 
 ## Usage
 
-TODO: Write usage instructions here
+Clone the repository locally and `cd` into the directory. Run `bin/setup` or `bundle install` to install dependencies with bundler.
+
+Run `bin/NEDL` to start NaturalEarthDownloader and follow the prompts to view files, add them to a download queue, and download the items in your queue to a local folder.  
 
 ## Development
 
