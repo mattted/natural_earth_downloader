@@ -2,9 +2,11 @@
 
 The NaturalEarthDownload gem is a command line interface to download files from [Natural Earth Data](https://www.naturalearthdata.com). Natural Earth Data provides vector and raster files with well integrated and maintained catographic attributes to facilitate efficient map production. This gem attempts to provide an equally efficient way to download collections of that data.
 
-## Usage
+## Installation
 
 Clone the repository locally and `cd` into the directory. Run `bin/setup` or `bundle install` to install dependencies with bundler.
+
+## Usage
 
 Run `bin/NEDL` to start NaturalEarthDownloader and follow the prompts to view files, add them to a download queue, and download the items in your queue to a local folder.  
 
