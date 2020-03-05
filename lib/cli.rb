@@ -66,6 +66,7 @@ class NEDL::CLI
     end
     puts "-----------------------------------------------------------------------"
 
+    # Passes the unique scale hashes to #get_scale_choice
     get_scale_choice(unique_scales)
   end
 
@@ -85,6 +86,7 @@ class NEDL::CLI
         get_scale_choice(scales)
       end
 
+      # Passes the name of the DataTheme to #list_categories
       list_categories(scales[choice.to_i - 1]["name"])
     end
   end
@@ -97,14 +99,14 @@ class NEDL::CLI
     # get a selection of DataThemes that have the user selected scale
     themes = NEDL::DataTheme.all.select{ |theme| theme.name == scale_name }
 
-    # puts the category of each theme that has the user selected scale
+    # puts the categories of the themes that have the user selected scale
     themes.each.with_index(1) do |theme, i|
       puts "(#{i}) ".red + " #{theme.category.capitalize} "
     end
 
     puts "-----------------------------------------------------------------------"
 
-    # passes the DataTheme objects with appropriate scales
+    # passes the DataTheme objects with the user selected scales
     get_category_choice(themes)
   end
 
@@ -129,11 +131,11 @@ class NEDL::CLI
 
       if themes[choice.to_i - 1].category == "cultural" || themes[choice.to_i - 1].category == "physical"
 
-        # passes a single DataTheme based on user selection of scale and category
+        # passes a single DataTheme instance based on user selection of scale and category
         NEDL::Scraper.scrape_vector_file_list(themes[choice.to_i - 1])
         list_vector_file_types(themes[choice.to_i - 1])
       else
-        # passes a single DataTheme based on user selection of scale and category
+        # passes a single DataTheme instance based on user selection of scale and category
         NEDL::Scraper.scrape_raster_categories(themes[choice.to_i - 1])
         list_raster_categories(themes[choice.to_i - 1])
       end
@@ -155,6 +157,7 @@ class NEDL::CLI
     end
     puts "-----------------------------------------------------------------------"
     
+    # called with vector_files to pass along the vector files with the user selected theme
     get_file_choice(vector_files)
   end
 
@@ -181,6 +184,7 @@ class NEDL::CLI
         get_file_choice(files)
       end
 
+      # pass the user selected instance of DataVector or DataRaster as argument
       list_downloads(files[choice.to_i - 1])
     end
   end
@@ -188,6 +192,8 @@ class NEDL::CLI
   def list_raster_categories(theme)
     puts ""
     puts "Categories for #{theme.url_add.split("-").map{ |word| word.capitalize }.join(" ")}".blue
+
+    # store the DataRasterCat instances with the user selected theme that was passed in
     raster_cats = NEDL::DataRasterCat.all.select do |category|
       category.theme == theme
     end
@@ -200,6 +206,7 @@ class NEDL::CLI
     end
     puts "-----------------------------------------------------------------------"
 
+    # pass the DataRasterCat instances with the user selected theme
     get_raster_category_choice(raster_cats)
   end
 
@@ -222,6 +229,7 @@ class NEDL::CLI
         get_raster_category_choice(raster_cats)
       end
 
+      # call with user selected DataRasterCat instance
       NEDL::Scraper.scrape_raster_file_list(raster_cats[choice.to_i - 1])
       list_raster_file_types(raster_cats[choice.to_i - 1])
     end
@@ -231,6 +239,8 @@ class NEDL::CLI
     puts ""
     
     puts "Files for #{category.theme.scale} #{category.name}".blue
+
+    # create a selection of only the DataRaster instances with the user selected category
     raster_files = NEDL::DataRaster.all.select do |file|
       file.category == category
     end
@@ -243,6 +253,7 @@ class NEDL::CLI
     end
     puts "-----------------------------------------------------------------------"
     
+    # pass the selection of DataRaster instances with the user selected category
     get_file_choice(raster_files)
   end
   
@@ -251,6 +262,7 @@ class NEDL::CLI
     puts ""
     puts "Downloads for #{file.name}".blue
 
+    # selection of Download instances with the user selected file type
     download_list = NEDL::Download.all.select { |dl| dl.type == file }
 
     download_list.each.with_index(1) do |dl, i|
@@ -261,6 +273,7 @@ class NEDL::CLI
     puts "-----------------------------------------------------------------------"
     puts ""
 
+    # pass the list of Download instances with the appropriate file type as an argument
     get_download_choice(download_list)
   end
 
@@ -288,6 +301,7 @@ class NEDL::CLI
         get_download_choice(download_list)
       end
 
+      # add a Download instance if it is not already in the DLQueue.all array
       NEDL::DLQueue.add_to_queue(download_list[choice.to_i - 1]) if !NEDL::DLQueue.all.include?(download_list[choice.to_i - 1]) 
       puts ""
       puts "#{download_list[choice.to_i - 1].name} added to queue".green

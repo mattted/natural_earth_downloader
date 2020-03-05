@@ -29,14 +29,15 @@ class NEDL::Scraper
       desc = data_vector.css(".downloadPromoBlock em").text
 
       if NEDL::DataVector.all.detect { |vector| vector.name == name && vector.desc == desc } == nil
-        new_vector = NEDL::DataVector.new(name, desc, theme)
+        # instantiates with theme to relate the DataVector instance to a DataTheme instance
+        new_vector = NEDL::DataVector.new(name, desc, theme) 
 
         data_vector.css(".download-link-div").each do |download|
           name = download.css(".download-link").text
           url = download.css(".download-link").attr('href').text
           size = download.css(".download-link-span").text.split(")").first.split("(").last
           version = download.css(".download-link-span").text.split(" ").last
-          type = new_vector
+          type = new_vector # relate the Download instance to a DataVector instance
 
           NEDL::Download.new(name, size, version, type, url)
                   
@@ -54,7 +55,8 @@ class NEDL::Scraper
       url = self.url_parser(raster_cat.css("a").attr("href").text) if raster_cat.css("a").attr("href") != nil
 
       if NEDL::DataRasterCat.all.detect{ |category| category.name == name && category.desc == desc } == nil && name != ""
-        NEDL::DataRasterCat.new(name, desc, url, theme)
+        # instantiates with theme to relate the DataRasterCat instance to a DataTheme instance
+        NEDL::DataRasterCat.new(name, desc, url, theme) 
       end
     end
 
@@ -68,6 +70,7 @@ class NEDL::Scraper
       desc = data_raster.css(".downloadPromoBlock em").text
 
       if NEDL::DataRaster.all.detect { |raster| raster.name == name && raster.desc == desc } == nil
+        # instantiates with category to relate the DataRaster instance to a DataRasterCat instance
         new_raster = NEDL::DataRaster.new(name, desc, category)
 
         data_raster.css(".download-link-div").each do |download|
@@ -75,7 +78,7 @@ class NEDL::Scraper
           url = download.css(".download-link").attr('href').text
           size = download.css(".download-link-span").text.split(")").first.split("(").last
           version = download.css(".download-link-span").text.split(" ").last
-          type = new_raster
+          type = new_raster # relate the Download instance to a DataRaster instance
 
           NEDL::Download.new(name, size, version, type, url)
                   
